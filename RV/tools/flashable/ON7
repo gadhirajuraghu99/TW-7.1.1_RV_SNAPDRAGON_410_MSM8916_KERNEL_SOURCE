@@ -1,0 +1,38 @@
+# Coded by RV @TANZEN ON7	
+#
+ui_print("======================================");
+ui_print("RV Kernel RVVER");
+ui_print("by RAGHUVARMA @XDA developers");
+ui_print("======================================");
+#
+ui_print("-Mounting Partitions...");
+ifelse(is_mounted("/system"), unmount("/system"));
+ifelse(is_mounted("/cache"), unmount("/cache"));
+mount("ext4", "EMMC", "/dev/block/bootdevice/by-name/system", "/system");
+mount("ext4", "EMMC", "/dev/block/bootdevice/by-name/cache", "/cache");
+#
+ui_print("-Wiping Cache...");
+delete_recursive("/cache");
+#
+set_progress(0.15);
+#
+ui_print("-Flashing Kernel...");
+package_extract_file("RV/o7lte/boot.img", "/dev/block/bootdevice/by-name/boot");
+#
+set_progress(0.50);
+#
+ui_print("-Flashing Pronto Wlan Drivers...");
+package_extract_file("RV/pronto", "/system/lib/modules/pronto/pronto_wlan.ko");
+package_extract_file("RV/wpsw", "/system/vendor/lib/libsecure_storage.so");
+#
+set_progress(0.80);
+#
+ui_print("-Unmounting Partitions...");
+ifelse(is_mounted("/system"), unmount("/system"));
+ifelse(is_mounted("/cache"), unmount("/cache"));
+#
+set_progress(1.000000);
+#
+ui_print("======================================");
+ui_print("Done! Enjoy :D");
+ui_print("======================================");
